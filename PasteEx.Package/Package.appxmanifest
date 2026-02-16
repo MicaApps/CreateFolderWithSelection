@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Package
   xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10"
   xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
@@ -21,7 +21,48 @@
   </Properties>
 
   <Resources>
-    <Resource Language="en-us" />
+    <Resource Language="ar-SA" />
+    <Resource Language="bg-BG" />
+    <Resource Language="ca-ES" />
+    <Resource Language="cs-CZ" />
+    <Resource Language="da-DK" />
+    <Resource Language="de-DE" />
+    <Resource Language="el-GR" />
+    <Resource Language="en-GB" />
+    <Resource Language="en-US" />
+    <Resource Language="es-ES" />
+    <Resource Language="es-MX" />
+    <Resource Language="et-EE" />
+    <Resource Language="fi-FI" />
+    <Resource Language="fr-CA" />
+    <Resource Language="fr-FR" />
+    <Resource Language="he-IL" />
+    <Resource Language="hr-HR" />
+    <Resource Language="hu-HU" />
+    <Resource Language="id-ID" />
+    <Resource Language="it-IT" />
+    <Resource Language="ja-JP" />
+    <Resource Language="ko-KR" />
+    <Resource Language="lt-LT" />
+    <Resource Language="lv-LV" />
+    <Resource Language="ms-MY" />
+    <Resource Language="nb-NO" />
+    <Resource Language="nl-NL" />
+    <Resource Language="pl-PL" />
+    <Resource Language="pt-BR" />
+    <Resource Language="pt-PT" />
+    <Resource Language="ro-RO" />
+    <Resource Language="ru-RU" />
+    <Resource Language="sk-SK" />
+    <Resource Language="sl-SI" />
+    <Resource Language="sr-Latn-RS" />
+    <Resource Language="sv-SE" />
+    <Resource Language="th-TH" />
+    <Resource Language="tr-TR" />
+    <Resource Language="uk-UA" />
+    <Resource Language="vi-VN" />
+    <Resource Language="zh-CN" />
+    <Resource Language="zh-TW" />
   </Resources>
 
   <Dependencies>
@@ -39,9 +80,11 @@
       <uap:VisualElements
         DisplayName="PasteEx"
         Description="Create folder with selection"
-        BackgroundColor="transparent"
+        BackgroundColor="#0078D7"
         Square150x150Logo="Images\Square150x150Logo.png"
         Square44x44Logo="Images\Square44x44Logo.png">
+        <uap:DefaultTile Square71x71Logo="Images\SmallTile.png" Wide310x150Logo="Images\WideTile.png" Square310x310Logo="Images\LargeTile.png"/>
+        <uap:SplashScreen Image="Images\SplashScreen.png"/>
       </uap:VisualElements>
       <Extensions>
         <desktop4:Extension Category="windows.fileExplorerContextMenus">

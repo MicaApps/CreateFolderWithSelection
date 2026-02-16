@@ -8,6 +8,7 @@
         <!-- WinUI 3 -->
         <UseWinUI>true</UseWinUI>
         <EnableMsixTooling>true</EnableMsixTooling>
+        <WindowsAppSdkBootstrapInitialize>false</WindowsAppSdkBootstrapInitialize>
     
         <!-- Project Options -->
         <Nullable>enable</Nullable>
