@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+﻿﻿<?xml version="1.0" encoding="utf-8"?>
 <Package
   xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10"
   xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
@@ -91,12 +91,6 @@
           <desktop4:FileExplorerContextMenus>
             <desktop5:ItemType Type="*">
               <desktop5:Verb Id="PasteExCommand" Clsid="E062D552-3269-4564-98C0-410714272456" />
-            </desktop5:ItemType>
-            <desktop5:ItemType Type="Directory">
-              <desktop5:Verb Id="PasteExCommandFolder" Clsid="E062D552-3269-4564-98C0-410714272456" />
-            </desktop5:ItemType>
-             <desktop5:ItemType Type="Directory\Background">
-              <desktop5:Verb Id="PasteExCommandBg" Clsid="E062D552-3269-4564-98C0-410714272456" />
             </desktop5:ItemType>
           </desktop4:FileExplorerContextMenus>
         </desktop4:Extension>
