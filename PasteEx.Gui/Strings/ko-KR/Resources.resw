@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <data name="AppDisplayName" xml:space="preserve">
+    <value>PasteEx</value>
+  </data>
+  <data name="AppDescription" xml:space="preserve">
+    <value>PasteEx</value>
+  </data>
+  <data name="MainPage_Title.Text" xml:space="preserve">
+    <value>PasteEx 설정</value>
+  </data>
+  <data name="Settings_EnableMenu.Header" xml:space="preserve">
+    <value>컨텍스트 메뉴 사용</value>
+  </data>
+  <data name="Settings_EnableMenu.Description" xml:space="preserve">
+    <value>마우스 오른쪽 버튼 메뉴에 '선택 항목으로 폴더 만들기' 표시</value>
+  </data>
+  <data name="Settings_Footer.Text" xml:space="preserve">
+    <value>변경 사항이 즉시 적용됩니다.</value>
+  </data>
+</root>

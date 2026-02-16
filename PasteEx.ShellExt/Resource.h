@@ -1,2 +1,5 @@
 #define IDI_ICON_LIGHT 101
 #define IDI_ICON_DARK 102
+#define IDS_MENU_TITLE 103
+#define IDS_MENU_TOOLTIP 104
+

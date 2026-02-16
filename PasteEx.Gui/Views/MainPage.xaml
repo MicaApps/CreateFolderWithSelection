@@ -10,13 +10,13 @@
     mc:Ignorable="d">
     <Grid Padding="24" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <StackPanel Spacing="10" VerticalAlignment="Top">
-            <TextBlock Text="PasteEx Settings" Style="{ThemeResource TitleTextBlockStyle}" Margin="0,0,0,12"/>
+            <TextBlock x:Uid="MainPage_Title" Text="PasteEx Settings" Style="{ThemeResource TitleTextBlockStyle}" Margin="0,0,0,12"/>
             
-            <tk:SettingsCard Header="Enable Context Menu" Description="Show 'Create folder with selection' in right-click menu">
+            <tk:SettingsCard x:Uid="Settings_EnableMenu" Header="Enable Context Menu" Description="Show 'Create folder with selection' in right-click menu">
                 <ToggleSwitch x:Name="MenuToggle" Toggled="MenuToggle_Toggled" IsOn="True" />
             </tk:SettingsCard>
             
-             <TextBlock Text="Changes take effect immediately." Style="{ThemeResource CaptionTextBlockStyle}" Foreground="{ThemeResource TextFillColorSecondaryBrush}" Margin="0,8,0,0"/>
+             <TextBlock x:Uid="Settings_Footer" Text="Changes take effect immediately." Style="{ThemeResource CaptionTextBlockStyle}" Foreground="{ThemeResource TextFillColorSecondaryBrush}" Margin="0,8,0,0"/>
         </StackPanel>
     </Grid>
 </Page>

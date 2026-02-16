@@ -49,8 +49,24 @@ IFACEMETHODIMP ExplorerCommand::GetTitle(IShellItemArray *psiItemArray, LPWSTR *
 {
     Log(L"[PasteEx] GetTitle called\n");
     
-    // Using standard name without debug count
-    return SHStrDupW(L"\u7528\u6240\u9009\u6587\u4ef6\u65b0\u5efa\u6587\u4ef6\u5939", ppszName);
+    DWORD count = 0;
+    if (psiItemArray)
+    {
+        psiItemArray->GetCount(&count);
+    }
+
+    // Load format string from resource
+    WCHAR szFormat[128];
+    if (!LoadStringW(g_hInst, IDS_MENU_TITLE, szFormat, ARRAYSIZE(szFormat)))
+    {
+        // Fallback if load fails
+        StringCchCopyW(szFormat, ARRAYSIZE(szFormat), L"Create folder with selection (%d items)");
+    }
+    
+    WCHAR szTitle[128];
+    StringCchPrintfW(szTitle, ARRAYSIZE(szTitle), szFormat, count);
+
+    return SHStrDupW(szTitle, ppszName);
 }
 
 IFACEMETHODIMP ExplorerCommand::GetIcon(IShellItemArray *psiItemArray, LPWSTR *ppszIcon)
@@ -75,8 +91,15 @@ IFACEMETHODIMP ExplorerCommand::GetIcon(IShellItemArray *psiItemArray, LPWSTR *p
 
 IFACEMETHODIMP ExplorerCommand::GetToolTip(IShellItemArray *psiItemArray, LPWSTR *ppszInfotip)
 {
-    // Return tooltip
-    return SHStrDupW(L"Create a new folder containing the selected items", ppszInfotip);
+    // Load tooltip from resource
+    WCHAR szTooltip[256];
+    if (!LoadStringW(g_hInst, IDS_MENU_TOOLTIP, szTooltip, ARRAYSIZE(szTooltip)))
+    {
+        // Fallback
+        StringCchCopyW(szTooltip, ARRAYSIZE(szTooltip), L"Create a new folder containing the selected items");
+    }
+
+    return SHStrDupW(szTooltip, ppszInfotip);
 }
 
 IFACEMETHODIMP ExplorerCommand::GetCanonicalName(GUID *pguidCommandName)
