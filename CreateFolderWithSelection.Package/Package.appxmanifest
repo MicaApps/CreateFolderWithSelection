@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- Manifest updated -->
 <Package
   xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10"
   xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
@@ -90,14 +91,14 @@
         <desktop4:Extension Category="windows.fileExplorerContextMenus">
           <desktop4:FileExplorerContextMenus>
             <desktop5:ItemType Type="*">
-              <desktop5:Verb Id="PasteExCommand" Clsid="E062D552-3269-4564-98C0-410714272456" />
+              <desktop5:Verb Id="PasteExCommand" Clsid="0F04C44B-CF3D-4F79-A8D2-AA5748A9F0C0" />
             </desktop5:ItemType>
           </desktop4:FileExplorerContextMenus>
         </desktop4:Extension>
         <com:Extension Category="windows.comServer">
           <com:ComServer>
             <com:SurrogateServer DisplayName="Create Folder With Selection Shell Extension">
-              <com:Class Id="E062D552-3269-4564-98C0-410714272456" Path="CreateFolderWithSelection.ShellExt\CreateFolderWithSelection.ShellExt.dll" ThreadingModel="STA"/>
+              <com:Class Id="0F04C44B-CF3D-4F79-A8D2-AA5748A9F0C0" Path="CreateFolderWithSelection.ShellExt\CreateFolderWithSelection.ShellExt.dll" ThreadingModel="STA"/>
             </com:SurrogateServer>
           </com:ComServer>
         </com:Extension>

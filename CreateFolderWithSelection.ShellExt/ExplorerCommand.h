@@ -7,11 +7,11 @@
 
 using namespace Microsoft::WRL;
 
-// Define the CLSID for the Explorer Command: {E062D552-3269-4564-98C0-410714272456}
+// Define the CLSID for the Explorer Command: {0F04C44B-CF3D-4F79-A8D2-AA5748A9F0C0}
 static const GUID CLSID_ExplorerCommand = 
-{ 0xe062d552, 0x3269, 0x4564, { 0x98, 0xc0, 0x41, 0x07, 0x14, 0x27, 0x24, 0x56 } };
+{ 0x0F04C44B, 0xCF3D, 0x4F79, { 0xA8, 0xD2, 0xAA, 0x57, 0x48, 0xA9, 0xF0, 0xC0 } };
 
-class __declspec(uuid("E062D552-3269-4564-98C0-410714272456")) ExplorerCommand : public RuntimeClass<RuntimeClassFlags<ClassicCom>, IExplorerCommand, IObjectWithSite>
+class __declspec(uuid("0F04C44B-CF3D-4F79-A8D2-AA5748A9F0C0")) ExplorerCommand : public RuntimeClass<RuntimeClassFlags<ClassicCom>, IExplorerCommand, IObjectWithSite>
 {
 public:
     ExplorerCommand();
