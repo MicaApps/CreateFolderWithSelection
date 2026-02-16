@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <data name="AppDisplayName" xml:space="preserve">
+    <value>Create Folder With Selection</value>
+  </data>
+  <data name="AppDescription" xml:space="preserve">
+    <value>Create Folder With Selection</value>
+  </data>
+  <data name="MainPage_Title.Text" xml:space="preserve">
+    <value>Impostazioni Create Folder With Selection</value>
+  </data>
+  <data name="Settings_EnableMenu.Header" xml:space="preserve">
+    <value>Abilita menu contestuale</value>
+  </data>
+  <data name="Settings_EnableMenu.Description" xml:space="preserve">
+    <value>Mostra 'Crea cartella con selezione' nel menu contestuale</value>
+  </data>
+  <data name="Settings_Footer.Text" xml:space="preserve">
+    <value>Le modifiche hanno effetto immediato.</value>
+  </data>
+</root>

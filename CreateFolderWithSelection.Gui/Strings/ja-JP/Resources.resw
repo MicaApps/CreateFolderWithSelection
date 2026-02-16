@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <data name="AppDisplayName" xml:space="preserve">
+    <value>Create Folder With Selection</value>
+  </data>
+  <data name="AppDescription" xml:space="preserve">
+    <value>Create Folder With Selection</value>
+  </data>
+  <data name="MainPage_Title.Text" xml:space="preserve">
+    <value>Create Folder With Selection 設定</value>
+  </data>
+  <data name="Settings_EnableMenu.Header" xml:space="preserve">
+    <value>コンテキストメニューを有効にする</value>
+  </data>
+  <data name="Settings_EnableMenu.Description" xml:space="preserve">
+    <value>右クリックメニューに「選択項目を含むフォルダーを作成」を表示する</value>
+  </data>
+  <data name="Settings_Footer.Text" xml:space="preserve">
+    <value>変更はすぐに反映されます。</value>
+  </data>
+</root>

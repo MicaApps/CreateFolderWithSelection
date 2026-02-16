@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <data name="AppDisplayName" xml:space="preserve">
+    <value>Create Folder With Selection</value>
+  </data>
+  <data name="AppDescription" xml:space="preserve">
+    <value>Create Folder With Selection</value>
+  </data>
+  <data name="MainPage_Title.Text" xml:space="preserve">
+    <value>Create Folder With Selection Ayarları</value>
+  </data>
+  <data name="Settings_EnableMenu.Header" xml:space="preserve">
+    <value>Bağlam menüsünü etkinleştir</value>
+  </data>
+  <data name="Settings_EnableMenu.Description" xml:space="preserve">
+    <value>Sağ tık menüsünde 'Seçimle klasör oluştur'u göster</value>
+  </data>
+  <data name="Settings_Footer.Text" xml:space="preserve">
+    <value>Değişiklikler hemen etkili olur.</value>
+  </data>
+</root>

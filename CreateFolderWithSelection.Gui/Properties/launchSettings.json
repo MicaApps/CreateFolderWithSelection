@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "PasteEx.Gui (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "PasteEx.Gui (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}
