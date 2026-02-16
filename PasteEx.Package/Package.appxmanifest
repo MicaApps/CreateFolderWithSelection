@@ -1,4 +1,5 @@
-﻿﻿<Package
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Package
   xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10"
   xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
   xmlns:desktop4="http://schemas.microsoft.com/appx/manifest/desktop/windows10/4"
@@ -38,10 +39,9 @@
       <uap:VisualElements
         DisplayName="PasteEx"
         Description="Create folder with selection"
+        BackgroundColor="transparent"
         Square150x150Logo="Images\Square150x150Logo.png"
-        Square44x44Logo="Images\Square44x44Logo.png" BackgroundColor="#0078D7">
-        <uap:DefaultTile Square71x71Logo="Images\SmallTile.png" Wide310x150Logo="Images\WideTile.png" Square310x310Logo="Images\LargeTile.png"/>
-        <uap:SplashScreen Image="Images\SplashScreen.png"/>
+        Square44x44Logo="Images\Square44x44Logo.png">
       </uap:VisualElements>
       <Extensions>
         <desktop4:Extension Category="windows.fileExplorerContextMenus">
