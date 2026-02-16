@@ -35,6 +35,67 @@ bool IsDarkMode()
     return false;
 }
 
+// Helper class to capture the newly created item from IFileOperation
+class CGetNewItemSink : public IFileOperationProgressSink
+{
+public:
+    CGetNewItemSink() : _cRef(1), _psiNewItem(NULL) {}
+    ~CGetNewItemSink() { if (_psiNewItem) _psiNewItem->Release(); }
+
+    // IUnknown
+    IFACEMETHODIMP QueryInterface(REFIID riid, void **ppv)
+    {
+        static const QITAB qit[] = {
+            QITABENT(CGetNewItemSink, IFileOperationProgressSink),
+            { 0 },
+        };
+        return QISearch(this, qit, riid, ppv);
+    }
+
+    IFACEMETHODIMP_(ULONG) AddRef() { return InterlockedIncrement(&_cRef); }
+    IFACEMETHODIMP_(ULONG) Release()
+    {
+        ULONG cRef = InterlockedDecrement(&_cRef);
+        if (0 == cRef) delete this;
+        return cRef;
+    }
+
+    // IFileOperationProgressSink methods
+    IFACEMETHODIMP StartOperations() { return S_OK; }
+    IFACEMETHODIMP FinishOperations(HRESULT hrResult) { return S_OK; }
+    IFACEMETHODIMP PreRenameItem(DWORD, IShellItem *, LPCWSTR) { return S_OK; }
+    IFACEMETHODIMP PostRenameItem(DWORD, IShellItem *, LPCWSTR, HRESULT, IShellItem *) { return S_OK; }
+    IFACEMETHODIMP PreMoveItem(DWORD, IShellItem *, IShellItem *, LPCWSTR) { return S_OK; }
+    IFACEMETHODIMP PostMoveItem(DWORD, IShellItem *, IShellItem *, LPCWSTR, HRESULT, IShellItem *) { return S_OK; }
+    IFACEMETHODIMP PreCopyItem(DWORD, IShellItem *, IShellItem *, LPCWSTR) { return S_OK; }
+    IFACEMETHODIMP PostCopyItem(DWORD, IShellItem *, IShellItem *, LPCWSTR, HRESULT, IShellItem *) { return S_OK; }
+    IFACEMETHODIMP PreDeleteItem(DWORD, IShellItem *) { return S_OK; }
+    IFACEMETHODIMP PostDeleteItem(DWORD, IShellItem *, HRESULT, IShellItem *) { return S_OK; }
+    IFACEMETHODIMP PreNewItem(DWORD, IShellItem *, LPCWSTR) { return S_OK; }
+    
+    IFACEMETHODIMP PostNewItem(DWORD dwFlags, IShellItem *psiDestinationFolder, LPCWSTR pszNewName, LPCWSTR pszTemplateName, DWORD dwFileAttributes, HRESULT hrNew, IShellItem *psiNewItem)
+    {
+        if (SUCCEEDED(hrNew) && psiNewItem)
+        {
+            // Capture the newly created item
+            _psiNewItem = psiNewItem;
+            _psiNewItem->AddRef();
+        }
+        return S_OK;
+    }
+
+    IFACEMETHODIMP UpdateProgress(UINT, UINT) { return S_OK; }
+    IFACEMETHODIMP ResetTimer() { return S_OK; }
+    IFACEMETHODIMP PauseTimer() { return S_OK; }
+    IFACEMETHODIMP ResumeTimer() { return S_OK; }
+
+    IShellItem* GetNewItem() { return _psiNewItem; }
+
+private:
+    long _cRef;
+    IShellItem *_psiNewItem;
+};
+
 ExplorerCommand::ExplorerCommand()
 {
     Log(L"[PasteEx] ExplorerCommand Constructor\n");
@@ -177,34 +238,40 @@ IFACEMETHODIMP ExplorerCommand::Invoke(IShellItemArray *psiItemArray, IBindCtx *
     hr = psiParent->GetDisplayName(SIGDN_FILESYSPATH, &pszParentPath);
     if (FAILED(hr)) return hr;
     
-    // Load localized new folder name
-    wchar_t szNewFolderName[MAX_PATH];
-    if (LoadStringW(g_hInst, IDS_NEW_FOLDER_NAME, szNewFolderName, ARRAYSIZE(szNewFolderName)) == 0)
+    // Load localized new folder name from shell32.dll
+    wchar_t szNewFolderName[MAX_PATH] = { 0 };
+    HINSTANCE hShell32 = LoadLibraryW(L"shell32.dll");
+    bool loaded = false;
+    if (hShell32)
     {
-        // Fallback if resource load fails
-        wcscpy_s(szNewFolderName, MAX_PATH, L"New folder");
+        // 30396 is the standard resource ID for "New Folder" in shell32.dll
+        if (LoadStringW(hShell32, 30396, szNewFolderName, ARRAYSIZE(szNewFolderName)) > 0)
+        {
+            loaded = true;
+        }
+        FreeLibrary(hShell32);
+    }
+    
+    if (!loaded)
+    {
+        // Fallback to our resource if shell32 fails
+        if (LoadStringW(g_hInst, IDS_NEW_FOLDER_NAME, szNewFolderName, ARRAYSIZE(szNewFolderName)) == 0)
+        {
+            wcscpy_s(szNewFolderName, MAX_PATH, L"New folder");
+        }
     }
 
-    // Generate a unique name for the new folder
-    wchar_t szUniqueName[MAX_PATH];
-    wcscpy_s(szUniqueName, MAX_PATH, szNewFolderName);
-    
-    wchar_t szFullPath[MAX_PATH];
-    PathCombineW(szFullPath, pszParentPath, szUniqueName);
-    
-    int i = 2;
-    while (PathFileExistsW(szFullPath))
-    {
-        wchar_t szTempName[MAX_PATH];
-        swprintf_s(szTempName, MAX_PATH, L"%s (%d)", szNewFolderName, i++);
-        wcscpy_s(szUniqueName, MAX_PATH, szTempName);
-        PathCombineW(szFullPath, pszParentPath, szUniqueName);
-    }
+    // Create Sink to capture the new item
+    // We use 'new' because it's a COM object with ref count
+    CGetNewItemSink *pSink = new CGetNewItemSink();
     
     // Create the new folder using IFileOperation (Step 1)
-    hr = pfo->NewItem(psiParent.Get(), FILE_ATTRIBUTE_DIRECTORY, szUniqueName, NULL, NULL);
+    // We pass szNewFolderName. The shell will handle collisions (e.g. append " (2)") automatically
+    // because we specified FOF_RENAMEONCOLLISION.
+    hr = pfo->NewItem(psiParent.Get(), FILE_ATTRIBUTE_DIRECTORY, szNewFolderName, NULL, pSink);
     if (FAILED(hr))
     {
+        pSink->Release();
         CoTaskMemFree(pszParentPath);
         return hr;
     }
@@ -212,15 +279,22 @@ IFACEMETHODIMP ExplorerCommand::Invoke(IShellItemArray *psiItemArray, IBindCtx *
     hr = pfo->PerformOperations();
     if (FAILED(hr))
     {
+        pSink->Release();
         CoTaskMemFree(pszParentPath);
         return hr;
     }
 
     // Move items to the new folder (Step 2)
-    ComPtr<IShellItem> psiNewFolder;
-    hr = SHCreateItemFromParsingName(szFullPath, NULL, IID_PPV_ARGS(&psiNewFolder));
-    if (SUCCEEDED(hr))
+    IShellItem *psiNewFolderRaw = pSink->GetNewItem();
+    if (psiNewFolderRaw)
     {
+        ComPtr<IShellItem> psiNewFolder = psiNewFolderRaw; // Take ownership via AddRef (implicit in ComPtr assignment from raw ptr? No, ComPtr(T*) does AddRef)
+        // Actually, ComPtr assignment from raw pointer calls AddRef.
+        // And pSink holds a ref. So we have 2 refs.
+        // When pSink is released, it releases 1.
+        // When psiNewFolder is destroyed, it releases 1.
+        // Correct.
+        
         ComPtr<IFileOperation> pfoMove;
         if (SUCCEEDED(CoCreateInstance(CLSID_FileOperation, NULL, CLSCTX_ALL, IID_PPV_ARGS(&pfoMove))))
         {
@@ -230,6 +304,7 @@ IFACEMETHODIMP ExplorerCommand::Invoke(IShellItemArray *psiItemArray, IBindCtx *
         }
     }
     
+    pSink->Release();
     CoTaskMemFree(pszParentPath);
     return S_OK;
 }
