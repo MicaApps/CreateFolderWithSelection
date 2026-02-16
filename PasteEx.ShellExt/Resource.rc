@@ -1,0 +1,4 @@
+#include "Resource.h"
+
+IDI_ICON_LIGHT ICON "Assets\\CreatFolderLight.ico"
+IDI_ICON_DARK  ICON "Assets\\CreatFolderDark.ico"

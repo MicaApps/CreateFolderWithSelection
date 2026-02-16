@@ -1,0 +1,9 @@
+Windows Registry Editor Version 5.00
+
+[-HKEY_CURRENT_USER\Software\Classes\CLSID\{E062D552-3269-4564-98C0-410714272456}]
+
+[-HKEY_CURRENT_USER\Software\Classes\*\shell\PasteEx]
+
+[-HKEY_CURRENT_USER\Software\Classes\Directory\shell\PasteEx]
+
+[-HKEY_CURRENT_USER\Software\Classes\Directory\Background\shell\PasteEx]

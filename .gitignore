@@ -1,0 +1,54 @@
+# Visual Studio
+.vs/
+*.user
+*.userosscache
+*.sln.docstates
+*.suo
+*.opensdf
+*.sdf
+*.cachefile
+*.dll
+*.exe
+*.pdb
+*.ipch
+*.aprof
+*.pwcp
+*.ncb
+*.lib
+*.sbr
+obj/
+[Bb]in
+[Dd]ebug*/
+[Rr]elease*/
+x64/
+x86/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+
+# Tooling
+_ReSharper*/
+*.ReSharper
+*.j.dp
+.novarc
+
+# Windows App Packaging
+AppX/
+BundleArtifacts/
+Package.StoreAssociation.xml
+_pkginfo.txt
+*.appx
+*.appxbundle
+*.appxupload
+*.appxrecipe
+*.appinstaller
+*/*.vcxproj.user
+*/*.wapproj.user
+
+# Local configuration
+*.suo
+*.user

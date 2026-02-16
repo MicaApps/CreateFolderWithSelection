@@ -1,0 +1,26 @@
+Windows Registry Editor Version 5.00
+
+[HKEY_CURRENT_USER\Software\Classes\CLSID\{E062D552-3269-4564-98C0-410714272456}]
+@="PasteEx Shell Extension"
+
+[HKEY_CURRENT_USER\Software\Classes\CLSID\{E062D552-3269-4564-98C0-410714272456}\InProcServer32]
+@="D:\\Users\\Shomn\\OneDrive - MSFT\\Source\\Repos\\PasteEx\\PasteEx.ShellExt\\x64\\Debug\\PasteEx.ShellExt.dll"
+"ThreadingModel"="Apartment"
+
+[HKEY_CURRENT_USER\Software\Classes\*\shell\PasteEx]
+@="用所选文件新建文件夹 (Debug)"
+
+[HKEY_CURRENT_USER\Software\Classes\*\shell\PasteEx\command]
+"DelegateExecute"="{E062D552-3269-4564-98C0-410714272456}"
+
+[HKEY_CURRENT_USER\Software\Classes\Directory\shell\PasteEx]
+@="用所选文件新建文件夹 (Debug)"
+
+[HKEY_CURRENT_USER\Software\Classes\Directory\shell\PasteEx\command]
+"DelegateExecute"="{E062D552-3269-4564-98C0-410714272456}"
+
+[HKEY_CURRENT_USER\Software\Classes\Directory\Background\shell\PasteEx]
+@="用所选文件新建文件夹 (Debug)"
+
+[HKEY_CURRENT_USER\Software\Classes\Directory\Background\shell\PasteEx\command]
+"DelegateExecute"="{E062D552-3269-4564-98C0-410714272456}"
