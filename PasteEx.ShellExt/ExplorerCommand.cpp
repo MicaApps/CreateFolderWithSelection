@@ -169,8 +169,6 @@ IFACEMETHODIMP ExplorerCommand::Invoke(IShellItemArray *psiItemArray, IBindCtx *
     if (FAILED(hr)) return hr;
 
     // Allow Undo and handle collisions automatically
-    // FOF_RENAMEONCOLLISION is crucial if we were moving to an existing folder,
-    // but here we are creating a new one.
     hr = pfo->SetOperationFlags(FOF_ALLOWUNDO | FOF_RENAMEONCOLLISION);
     if (FAILED(hr)) return hr;
 
@@ -179,42 +177,61 @@ IFACEMETHODIMP ExplorerCommand::Invoke(IShellItemArray *psiItemArray, IBindCtx *
     hr = psiParent->GetDisplayName(SIGDN_FILESYSPATH, &pszParentPath);
     if (FAILED(hr)) return hr;
     
+    // Load localized new folder name
+    wchar_t szNewFolderName[MAX_PATH];
+    if (LoadStringW(g_hInst, IDS_NEW_FOLDER_NAME, szNewFolderName, ARRAYSIZE(szNewFolderName)) == 0)
+    {
+        // Fallback if resource load fails
+        wcscpy_s(szNewFolderName, MAX_PATH, L"New folder");
+    }
+
     // Generate a unique name for the new folder
-    wchar_t szNewFolderPath[MAX_PATH];
-    PathCombineW(szNewFolderPath, pszParentPath, L"New Folder");
+    wchar_t szUniqueName[MAX_PATH];
+    wcscpy_s(szUniqueName, MAX_PATH, szNewFolderName);
+    
+    wchar_t szFullPath[MAX_PATH];
+    PathCombineW(szFullPath, pszParentPath, szUniqueName);
     
     int i = 2;
-    while (PathFileExistsW(szNewFolderPath))
+    while (PathFileExistsW(szFullPath))
     {
-        wchar_t szName[MAX_PATH];
-        swprintf_s(szName, MAX_PATH, L"New Folder (%d)", i++);
-        PathCombineW(szNewFolderPath, pszParentPath, szName);
+        wchar_t szTempName[MAX_PATH];
+        swprintf_s(szTempName, MAX_PATH, L"%s (%d)", szNewFolderName, i++);
+        wcscpy_s(szUniqueName, MAX_PATH, szTempName);
+        PathCombineW(szFullPath, pszParentPath, szUniqueName);
+    }
+    
+    // Create the new folder using IFileOperation (Step 1)
+    hr = pfo->NewItem(psiParent.Get(), FILE_ATTRIBUTE_DIRECTORY, szUniqueName, NULL, NULL);
+    if (FAILED(hr))
+    {
+        CoTaskMemFree(pszParentPath);
+        return hr;
+    }
+
+    hr = pfo->PerformOperations();
+    if (FAILED(hr))
+    {
+        CoTaskMemFree(pszParentPath);
+        return hr;
+    }
+
+    // Move items to the new folder (Step 2)
+    ComPtr<IShellItem> psiNewFolder;
+    hr = SHCreateItemFromParsingName(szFullPath, NULL, IID_PPV_ARGS(&psiNewFolder));
+    if (SUCCEEDED(hr))
+    {
+        ComPtr<IFileOperation> pfoMove;
+        if (SUCCEEDED(CoCreateInstance(CLSID_FileOperation, NULL, CLSCTX_ALL, IID_PPV_ARGS(&pfoMove))))
+        {
+            pfoMove->SetOperationFlags(FOF_ALLOWUNDO | FOF_RENAMEONCOLLISION);
+            pfoMove->MoveItems(psiItemArray, psiNewFolder.Get());
+            pfoMove->PerformOperations();
+        }
     }
     
     CoTaskMemFree(pszParentPath);
-
-    // Create the directory using standard Win32 API first to ensure we know the path.
-    // NOTE: This creation step is NOT undoable via Ctrl+Z, but the subsequent move IS.
-    // If the user undoes the move, an empty folder will remain.
-    // This is a trade-off for simplicity vs implementing a full IFileOperationProgressSink.
-    if (!CreateDirectoryW(szNewFolderPath, NULL))
-    {
-        return HRESULT_FROM_WIN32(GetLastError());
-    }
-
-    // Get IShellItem for the new folder
-    ComPtr<IShellItem> psiDestination;
-    hr = SHCreateItemFromParsingName(szNewFolderPath, NULL, IID_PPV_ARGS(&psiDestination));
-    if (FAILED(hr)) return hr;
-
-    // Queue the move operation
-    // Using MoveItems is efficient and shows the standard progress dialog
-    hr = pfo->MoveItems(psiItemArray, psiDestination.Get());
-    if (FAILED(hr)) return hr;
-
-    hr = pfo->PerformOperations();
-
-    return hr;
+    return S_OK;
 }
 
 IFACEMETHODIMP ExplorerCommand::GetFlags(EXPCMDFLAGS *pFlags)

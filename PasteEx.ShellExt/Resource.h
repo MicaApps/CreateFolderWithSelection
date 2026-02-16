@@ -2,4 +2,6 @@
 #define IDI_ICON_DARK 102
 #define IDS_MENU_TITLE 103
 #define IDS_MENU_TOOLTIP 104
+#define IDS_NEW_FOLDER_NAME 105
+
 
