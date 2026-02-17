@@ -1,4 +1,4 @@
-# CreateFolderWithSelection
+# <img width="64" height="64" alt="Group 1" src="https://github.com/user-attachments/assets/a63b10e6-9010-4295-bf5c-3a77677ab2e1" /> CreateFolderWithSelection
 
 在右键菜单中动态添加 “用所选项目新建文件夹“
 
